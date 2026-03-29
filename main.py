@@ -33,11 +33,11 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 # 代理配置 (支持 SOCKS5 账号密码)
 # 格式: socks5://user:pass@ip:port
-DEFAULT_PROXY = "socks5://3mB7ZaCHCk:FMkqnb1xgD@216.167.28.11:55555"
+DEFAULT_PROXY = "socks5://rH0BnzMAdf:HxMZPxFNnh@34.104.177.212:55555"
 PROXY_URL = os.getenv("PROXY_URL") or DEFAULT_PROXY
 
 # XServer 账户配置
-LOGIN_EMAIL = os.getenv("XSERVER_EMAIL") or "xserver.uneasy684@yyyx.uk"
+LOGIN_EMAIL = os.getenv("XSERVER_EMAIL") or "felixlee@colabeta.com"
 LOGIN_PASSWORD = os.getenv("XSERVER_PASSWORD") or "a63818399#"
 TARGET_URL = "https://secure.xserver.ne.jp/xapanel/login/xmgame"
 
