@@ -87,7 +87,7 @@ class TelegramNotifier:
         
         message = f"<b>🎮 XServer GAME 续期通知</b>\n\n"
         message += f"🕐 运行时间: <code>{timestamp}</code>\n"
-        message += f"🖥 服务器: <code>🇯🇵 Xserver(fchp1997)</code>\n\n"
+        message += f"🖥 服务器: <code>🇯🇵 Xserverfelix)</code>\n\n"
         
         if status == "Success":
             message += f"📊 续期结果: <b>✅ 成功</b>\n"
@@ -357,7 +357,7 @@ class XServerBot:
         
         content = f"**最后运行时间**: `{current_time}`\n\n"
         content += "**运行结果**: <br>\n"
-        content += "🖥️服务器:`🇯🇵Xserver(fchp1997)`<br>\n"
+        content += "🖥️服务器:`🇯🇵Xserver(felix)`<br>\n"
         
         status_icon = {
             "Success": "✅Success",
