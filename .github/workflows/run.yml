@@ -3,7 +3,7 @@ name: XServer Renew (Selenium)
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 4 */2 * *"   # 每天自动执行
+    - cron: "0 12 */2 * *"   # 每天自动执行
 
 jobs:
   run_script:
