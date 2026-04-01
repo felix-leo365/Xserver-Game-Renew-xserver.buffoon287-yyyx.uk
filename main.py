@@ -37,7 +37,7 @@ DEFAULT_PROXY = "socks5://rH0BnzMAdf:HxMZPxFNnh@34.104.177.212:55555"
 PROXY_URL = os.getenv("PROXY_URL") or DEFAULT_PROXY
 
 # XServer 账户配置
-LOGIN_EMAIL = os.getenv("XSERVER_EMAIL") or "laa7qgp2@linshiyou.com"
+LOGIN_EMAIL = os.getenv("XSERVER_EMAIL") or "cacadia@youxiang.dev"
 LOGIN_PASSWORD = os.getenv("XSERVER_PASSWORD") or "a63818399#"
 TARGET_URL = "https://secure.xserver.ne.jp/xapanel/login/xmgame"
 
