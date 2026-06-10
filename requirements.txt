@@ -1,4 +1,0 @@
-selenium
-selenium-wire
-blinker==1.4
-requests
