@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   schedule:
     # 北京时间 08:00 和 20:00（UTC 00:00 / 12:00）
-    - cron: "0 0,12 * * *"
+    - cron: "0 8 */2 * *"
 
 jobs:
   renew:
