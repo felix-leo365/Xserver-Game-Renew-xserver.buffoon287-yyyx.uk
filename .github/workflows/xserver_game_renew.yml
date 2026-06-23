@@ -1,6 +1,13 @@
 name: XServer-Game-Renew
+
 on:
   workflow_dispatch:
+    inputs:
+      start_date:
+        description: "起始日期 (UTC)，例如 2026-03-20 00:00"
+        required: false
+        default: "2026-06-23 00:00"
+
   schedule:
     # 北京时间 08:00 和 20:00（UTC 00:00 / 12:00）
     - cron: "0 0 * * *"
@@ -9,7 +16,7 @@ jobs:
   renew:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    
+
     steps:
       - name: 📥 拉取私库脚本
         uses: actions/checkout@v4
@@ -24,25 +31,66 @@ jobs:
       - name: 🐍 安装 Python 依赖
         run: pip install requests --quiet
 
+      # =========================
+      # ⏱️ 日期控制（参数化版本）
+      # =========================
+      - name: ⏱️ 执行频率控制
+        id: check_time
+        run: |
+          echo "==== 时间判断开始 ===="
+
+          START_INPUT="${{ github.event.inputs.start_date }}"
+          if [ -z "$START_INPUT" ]; then
+            START_INPUT="2026-03-20 00:00"
+          fi
+
+          START_TIME=$(date -u -d "$START_INPUT" +%s)
+          NOW=$(date +%s)
+
+          DIFF=$((NOW - START_TIME))
+          DAYS=$((DIFF / 86400))
+
+          echo "起始时间: $START_INPUT"
+          echo "当前UTC: $(date -u)"
+          echo "已过去天数: $DAYS"
+
+          if [ $DIFF -lt 0 ]; then
+            echo "run=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # 隔天执行（核心）
+          if (( DAYS % 2 != 0 )); then
+            echo "今天不执行（隔天规则）"
+            echo "run=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "run=true" >> $GITHUB_OUTPUT
+
+      # =========================
+      # GOST 代理
+      # =========================
       - name: 🛡️ 启动 GOST 代理转发
-        if: ${{ env.GOST_PROXY != '' }}
+        if: steps.check_time.outputs.run == 'true'
         env:
           GOST_PROXY: ${{ secrets.GOST_PROXY }}
         run: |
           VERSION=$(curl -s https://api.github.com/repos/ginuerzh/gost/releases/latest | grep '"tag_name"' | cut -d'"' -f4 | tr -d 'v')
-          echo "📦 GOST 版本: $VERSION"
           wget -q "https://github.com/ginuerzh/gost/releases/download/v${VERSION}/gost_${VERSION}_linux_amd64.tar.gz"
           tar -xzf "gost_${VERSION}_linux_amd64.tar.gz"
           chmod +x gost
+
           nohup ./gost -L http://:8080 -F "$GOST_PROXY" > gost.log 2>&1 &
           sleep 3
-          echo "✅ GOST 已启动，测试连通性..."
-          curl -s -x http://127.0.0.1:8080 https://api.ipify.org | sed 's/\.[0-9]*$/.**/' && echo
+
+          curl -s -x http://127.0.0.1:8080 https://api.ipify.org
 
       - name: 🔧 执行续期
+        if: steps.check_time.outputs.run == 'true'
         env:
           XSERVER_GAME_ACCOUNT: ${{ secrets.XSERVER_GAME_ACCOUNT }}
           GOST_PROXY: ${{ secrets.GOST_PROXY }}
           TG_BOT: ${{ secrets.TG_BOT }}
-          SERVER_ID: ${{ secrets.SERVER_ID }}   # 👈 加这一行
+          SERVER_ID: ${{ secrets.SERVER_ID }}
         run: python3 xserver_game_renew.py
