@@ -6,7 +6,7 @@ on:
       start_date:
         description: "起始UTC时间（格式：YYYY-MM-DD HH:MM）"
         required: false
-        default: "2026-06-23 00:00"
+        default: "2026-06-22 00:00"
 
   schedule:
     # 北京时间 08:00 / 20:00（UTC 00:00 / 12:00）
