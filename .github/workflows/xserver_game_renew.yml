@@ -8,10 +8,6 @@ on:
         required: false
         default: "2026-06-22 00:00"
 
-  schedule:
-    # 北京时间 08:00 / 20:00（UTC 00:00 / 12:00）
-    - cron: "0 0 * * *"
-
 jobs:
   renew:
     runs-on: ubuntu-latest
