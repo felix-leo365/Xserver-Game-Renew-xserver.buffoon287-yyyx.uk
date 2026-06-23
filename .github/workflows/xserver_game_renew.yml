@@ -44,4 +44,5 @@ jobs:
           XSERVER_GAME_ACCOUNT: ${{ secrets.XSERVER_GAME_ACCOUNT }}
           GOST_PROXY: ${{ secrets.GOST_PROXY }}
           TG_BOT: ${{ secrets.TG_BOT }}
+          SERVER_ID: ${{ secrets.SERVER_ID }}   # 👈 加这一行
         run: python3 xserver_game_renew.py
